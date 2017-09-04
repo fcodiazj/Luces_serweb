@@ -13,9 +13,9 @@ require_once "VistaApi.php";
  */
 class VistaJson extends VistaApi
 {
-    public function __construct($estado = 400)
+    public function __construct($http_code = 200)
     {
-        $this->estado = $estado;
+        $this->http_code = $http_code;
     }
 
     /**
@@ -24,9 +24,7 @@ class VistaJson extends VistaApi
      */
     public function imprimir($cuerpo)
     {
-        if ($this->estado) {
-            http_response_code($this->estado);
-        }
+        $this->http_code = http_response_code();
         header('Content-Type: application/json; charset=utf8');
         echo json_encode($cuerpo, JSON_PRETTY_PRINT);
         exit;

@@ -7,83 +7,105 @@
  */
 
 
-require 'utilidades/ExcepcionApi.php';
+require_once 'utilidades/ExcepcionApi.php';
 
 
 class usuarios
 {
     // Datos de la tabla "usuarios"
     const NOMBRE_TABLA = "usuarios";
-    const ID_USUARIO = "id_usuarios";
-    const NOMBRE = "nombres";
+    const ID_USUARIOS = "id_usuarios";
+    const NOMBRES = "nombres";
     const APELLIDOS = "apellidos";
     const RUT = "rut";
     const CORREO = "correo";
     const LOGIN = "login";
     const PASSWORD = "password";
+
+    // Datos de la tabla "seriales"
+    const NOMBRE_TABLA_SERIALES = "seriales";
+    const ID_SERIAL = "id_serial";
     const SERIAL = "serial";
-    const CLAVE_API = "claveApi";
 
 
     //determina la accion a realiza sobre el recurso
-    public static function post($peticion)
+    public function post($peticion)
     {
-        if ($peticion[0] == 'registro') {
+        $accion = array_shift($peticion);
+
+        if ($accion == 'registrar') {
             return self::registrar();
-        } else if ($peticion[0] == 'loguear') {
-            return self::loguear();
         } else {
-            throw new ExcepcionApi(5, "Url mal formada", 400);
+            if ($accion == 'loguear') {
+                return self::loguear();
+            } else {
+                throw new ExcepcionApi(5, "Url mal formada");
+            }
         }
     }
 
 
-
-    private function validarContrasena($contrasenaPlana, $contrasenaHash)
+    private function loguear()
     {
-        return password_verify($contrasenaPlana, $contrasenaHash);
+
+        $respuesta = array();
+        $body = file_get_contents('php://input');
+        $usuario = json_decode($body);
+        $rut = $usuario->rut;
+        $password = $usuario->password;
+
+        if (self::autenticar($rut, $password)) {
+            $usuarioBD = self::obtenerUsuarioPorRut($rut);
+            if ($usuarioBD != NULL) {
+                http_response_code(200);
+                $respuesta["id_usuarios"] = $usuarioBD["id_usuarios"];
+                $respuesta["nombres"] = $usuarioBD["nombres"];
+                $respuesta["apellidos"] = $usuarioBD["apellidos"];
+                return ["estado" => 1, "usuario" => $respuesta];
+            } else {
+                throw new ExcepcionApi(5,"Las credenciales no corresponden a ningun usuario registrado");
+            }
+        } else {
+            throw new ExcepcionApi(5,utf8_encode("Correo o contraseña inválidos"));
+        }
     }
 
-
+    //comprobamos si el password es el correcto para el rut entregado
     private function autenticar($rut, $password)
     {
         $comando = "SELECT password FROM " . self::NOMBRE_TABLA .
             " WHERE " . self::RUT . "=?";
 
         try {
-
             $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
             $sentencia->bindParam(1, $rut);
             $sentencia->execute();
 
             if ($sentencia) {
                 $resultado = $sentencia->fetch();
-
-                if (self::validarContrasena($password, $resultado['contrasena'])) {
+                //var_dump($resultado);
+                if ($resultado['password'] == $password) {
+                    //print "logeado";
                     return true;
-                } else return false;
+                } else {
+                    //print "no logeado";
+                    return false;
+                }
             } else {
                 return false;
             }
-        } catch (PDOException $e) {
-            //throw new ExcepcionApi(self::ESTADO_ERROR_BD, $e->getMessage());
+        }
+            catch (PDOException $e) {
+            throw new ExcepcionApi(5, $e->getMessage());
         }
     }
 
     private function obtenerUsuarioPorRut($rut)
     {
-        $comando = "SELECT " .
-            self::NOMBRE . "," .
-            self::CONTRASENA . "," .
-            self::CORREO . "," .
-            self::CLAVE_API .
-            " FROM " . self::NOMBRE_TABLA .
+        $comando = "SELECT " .self::ID_USUARIOS . "," .self::NOMBRES . "," .self::APELLIDOS . " FROM " . self::NOMBRE_TABLA .
             " WHERE " . self::RUT . "=?";
-
         $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-
-        $sentencia->bindParam(1, $RUT);
-
+        $sentencia->bindParam(1, $rut);
         if ($sentencia->execute())
             return $sentencia->fetch(PDO::FETCH_ASSOC);
         else
@@ -91,36 +113,55 @@ class usuarios
     }
 
 
-    private function loguear()
+    private function checkserial($serial)
     {
-        $respuesta = array();
-        print "voya aca";
-        $body = file_get_contents('php://input');
-        $usuario = json_decode($body);
-
-        $rut = $usuario->rut;
-        $password = $usuario->contrasena;
-
-
-        /*if (self::autenticar($rut, $password)) {
-            $usuarioBD = self::obtenerUsuarioPorRut($rut);
-
-            if ($usuarioBD != NULL) {
-                http_response_code(200);
-                $respuesta["nombre"] = $usuarioBD["nombre"];
-                $respuesta["correo"] = $usuarioBD["correo"];
-                $respuesta["claveApi"] = $usuarioBD["claveApi"];
-                return ["estado" => 1, "usuario" => $respuesta];
-            } else {
-                //throw new ExcepcionApi(self::ESTADO_FALLA_DESCONOCIDA,"Ha ocurrido un error");
-            }
-        } else {
-            //throw new ExcepcionApi(self::ESTADO_PARAMETROS_INCORRECTOS,
-                //utf8_encode("Correo o contraseña inválidos"));
-        }*/
+        $comando =  "SELECT "
+                    .self::ID_SERIAL
+                    ." FROM " .self::NOMBRE_TABLA_SERIALES
+                    ." WHERE "
+                    .self::SERIAL."=?";
+        $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+        $sentencia->bindParam(1, $serial);
+        if ($sentencia->execute())
+            return $sentencia->fetch(PDO::FETCH_ASSOC);
+        else
+            return null;
     }
 
+    private function registrar(){
+        $respuesta = array();
+        $body = file_get_contents('php://input');
+        $usuario = json_decode($body);
+        $rut = $usuario->rut;
+        $password = $usuario->password;
+        $serial = $usuario->serial;
+        $usuarioenDB = self::obtenerUsuarioPorRut($rut);
+        if ($usuarioenDB == NULL) {
+            $serialenDB = self::checkserial($serial);
+            if ($serialenDB == NULL) {
+                try {
+                    $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ("
+                        . self::RUT . ", "
+                        . self::LOGIN . ", "
+                        . self::PASSWORD . ")"
+                        . "VALUES (?,?,?)";
 
+                    $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+                    $sentencia->bindParam(1, $rut);
+                    $sentencia->bindParam(2, $rut);
+                    $sentencia->bindParam(3, $password);
+                    $sentencia->execute();
+                    $id_usuario = self::obtenerUsuarioPorRut($rut);
+                    seriales::crear($id_usuario['id_usuarios'], $serial);
+                } catch (PDOException $e) {
+                    throw new ExcepcionApi(5, $e->getMessage());
+                }
+            } else {
+                throw new ExcepcionApi(5, "El serial ya existe en el sistema");
+            }
+        } else {
+            throw new ExcepcionApi(5, "El usuario ya existe en el sistema");
+        }
 
-
+    }
 }
