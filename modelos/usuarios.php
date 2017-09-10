@@ -135,6 +135,7 @@ class usuarios
         $rut = $usuario->rut;
         $password = $usuario->password;
         $serial = $usuario->serial;
+        $correo = $usuario->correo;
         $usuarioenDB = self::obtenerUsuarioPorRut($rut);
         if ($usuarioenDB == NULL) {
             $serialenDB = self::checkserial($serial);
@@ -143,13 +144,15 @@ class usuarios
                     $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ("
                         . self::RUT . ", "
                         . self::LOGIN . ", "
-                        . self::PASSWORD . ")"
-                        . "VALUES (?,?,?)";
+                        . self::PASSWORD . ", "
+                        . self::CORREO . ")"
+                        . "VALUES (?,?,?,?)";
 
                     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
                     $sentencia->bindParam(1, $rut);
                     $sentencia->bindParam(2, $rut);
                     $sentencia->bindParam(3, $password);
+                    $sentencia->bindParam(4, $correo);
                     $sentencia->execute();
                     $id_usuario = self::obtenerUsuarioPorRut($rut);
                     seriales::crear($id_usuario['id_usuarios'], $serial);
