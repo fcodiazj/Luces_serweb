@@ -132,6 +132,8 @@ class usuarios
         $respuesta = array();
         $body = file_get_contents('php://input');
         $usuario = json_decode($body);
+        $nombre = $usuario->nombre;
+        $correo = $usuario->correo;
         $rut = $usuario->rut;
         $password = $usuario->password;
         $serial = $usuario->serial;
@@ -139,22 +141,30 @@ class usuarios
         if ($usuarioenDB == NULL) {
             $serialenDB = self::checkserial($serial);
             if ($serialenDB == NULL) {
-                try {
+
                     $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ("
+                        . self::NOMBRES . ", "
+                        . self::CORREO . ", "
                         . self::RUT . ", "
                         . self::LOGIN . ", "
                         . self::PASSWORD . ")"
-                        . "VALUES (?,?,?)";
-
+                        . "VALUES (?,?,?,?,?)";
+                    try {
                     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-                    $sentencia->bindParam(1, $rut);
-                    $sentencia->bindParam(2, $rut);
-                    $sentencia->bindParam(3, $password);
+                    $sentencia->bindParam(1, $nombre);
+                    $sentencia->bindParam(2, $correo);
+                    $sentencia->bindParam(3, $rut);
+                    $sentencia->bindParam(4, $rut);
+                    $sentencia->bindParam(5, $password);
                     $sentencia->execute();
                     $id_usuario = self::obtenerUsuarioPorRut($rut);
-                    seriales::crear($id_usuario['id_usuarios'], $serial);
+                    if (seriales::crear($id_usuario['id_usuarios'], $serial)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 } catch (PDOException $e) {
-                    throw new ExcepcionApi(5, $e->getMessage());
+                    throw new ExcepcionApi(10, $e->getMessage());
                 }
             } else {
                 throw new ExcepcionApi(5, "El serial ya existe en el sistema");

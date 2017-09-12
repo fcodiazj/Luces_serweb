@@ -89,39 +89,22 @@ class seriales
                         ."?, "
                         ."4, "
                         ."?)";
-            $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+            try {
+                $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+
             $sentencia->bindParam(1, $serial);
             $sentencia->bindParam(2, $id_usuario);
-            if ($sentencia->execute()) {
-                //si no existe, crea la tabla en la bd
-                $nombre_tabla = "luces_".$serial;
-                $columnas = "id_luz int(10) unsigned AUTO_INCREMENT NOT NULL, color varchar(255) NOT NULL, pos_fila int(11) NOT NULL, pos_col int(11) NOT NULL, id_serial int(10) unsigned NOT NULL, PRIMARY KEY(id_luz)";
-                $comando =  "CREATE TABLE :nombre_tabla (:columnas)";
-                $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-                $sentencia->bindValue(':nombre_tabla', $nombre_tabla);
-                $sentencia->bindValue(':columnas', $columnas);
-                //$sentencia->bindParam(:columnas, $columnas);
-                $sentencia->execute();
-                print "voy aca...";
-                $comando =  'ALTER TABLE :nombre_tabla :columnas';
-                $columnas = 'ADD CONSTRAINT luces_id_serial_foreign
-                                FOREIGN KEY(id_serial)
-                                REFERENCES seriales(id_serial)';
-                $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-                $sentencia->bindParam(':nombre_tabla', $nombre_tabla);
-                $sentencia->bindParam(':columnas', $columnas);
-                $sentencia->execute();
-                return $sentencia->fetch(PDO::FETCH_ASSOC);
-
-            } else {
-                //si existe se sale
-                throw new ExcepcionApi(5, "No es posible crear el registro en la tabla de seriales");
+            $sentencia->execute();
+            return true;
+            } catch (PDOException $e) {
+                throw new ExcepcionApi(15, $e->getMessage());
             }
         } else {
             //si existe se sale
             throw new ExcepcionApi(5, "El serial ya esta asociado con el usuario.");
         }
     }
+
 
     private function check($id_usuario, $serial){
         $comando = "SELECT ".self::ID_SERIAL." FROM " . self::NOMBRE_TABLA_SERIALES .
