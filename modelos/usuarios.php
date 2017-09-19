@@ -33,40 +33,22 @@ class usuarios
     {
         $accion = array_shift($peticion);
 
-        if ($accion == 'registrar') {
-            return self::registrar();
-        } else {
-            if ($accion == 'loguear') {
+        switch ($accion) {
+            case 'registrar':
+                return self::registrar();
+            break;
+
+            case 'loguear';
                 return self::loguear();
-            } else {
+            break;
+
+            case 'mostrar';
+                return self::mostrar();
+            break;
+
+            default:
                 throw new ExcepcionApi(5, "Url mal formada");
-            }
-        }
-    }
-
-
-    private function loguear()
-    {
-
-        $respuesta = array();
-        $body = file_get_contents('php://input');
-        $usuario = json_decode($body);
-        $rut = $usuario->rut;
-        $password = $usuario->password;
-
-        if (self::autenticar($rut, $password)) {
-            $usuarioBD = self::obtenerUsuarioPorRut($rut);
-            if ($usuarioBD != NULL) {
-                http_response_code(200);
-                $respuesta["id_usuarios"] = $usuarioBD["id_usuarios"];
-                $respuesta["nombres"] = $usuarioBD["nombres"];
-                $respuesta["apellidos"] = $usuarioBD["apellidos"];
-                return ["estado" => 1, "usuario" => $respuesta];
-            } else {
-                throw new ExcepcionApi(5,"Las credenciales no corresponden a ningun usuario registrado");
-            }
-        } else {
-            throw new ExcepcionApi(5,utf8_encode("Correo o contraseña inválidos"));
+            break;
         }
     }
 
@@ -95,31 +77,33 @@ class usuarios
                 return false;
             }
         }
-            catch (PDOException $e) {
+        catch (PDOException $e) {
             throw new ExcepcionApi(5, $e->getMessage());
         }
     }
 
+    //determina los datos del usuario segun el rut
     private function obtenerUsuarioPorRut($rut)
     {
-        $comando = "SELECT " .self::ID_USUARIOS . "," .self::NOMBRES . "," .self::APELLIDOS . " FROM " . self::NOMBRE_TABLA .
+        $comando = "SELECT " .self::ID_USUARIOS . "," .self::RUT . "," . self::NOMBRES . "," .self::APELLIDOS . " FROM " . self::NOMBRE_TABLA .
             " WHERE " . self::RUT . "=?";
         $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
         $sentencia->bindParam(1, $rut);
-        if ($sentencia->execute())
+        if ($sentencia->execute()){
             return $sentencia->fetch(PDO::FETCH_ASSOC);
-        else
+        } else {
             return null;
+        }
     }
 
-
+    //determina si un serial ya esta registrado
     private function checkserial($serial)
     {
         $comando =  "SELECT "
-                    .self::ID_SERIAL
-                    ." FROM " .self::NOMBRE_TABLA_SERIALES
-                    ." WHERE "
-                    .self::SERIAL."=?";
+            .self::ID_SERIAL
+            ." FROM " .self::NOMBRE_TABLA_SERIALES
+            ." WHERE "
+            .self::SERIAL."=?";
         $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
         $sentencia->bindParam(1, $serial);
         if ($sentencia->execute())
@@ -128,28 +112,35 @@ class usuarios
             return null;
     }
 
-    private function registrar(){
-        $respuesta = array();
+    //registra a un nuevo usuario en la base de datos
+    private function registrar()
+    {
         $body = file_get_contents('php://input');
         $usuario = json_decode($body);
-        $nombre = $usuario->nombre;
-        $correo = $usuario->correo;
         $rut = $usuario->rut;
-        $password = $usuario->password;
         $serial = $usuario->serial;
-        $usuarioenDB = self::obtenerUsuarioPorRut($rut);
-        if ($usuarioenDB == NULL) {
-            $serialenDB = self::checkserial($serial);
-            if ($serialenDB == NULL) {
 
-                    $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ("
-                        . self::NOMBRES . ", "
-                        . self::CORREO . ", "
-                        . self::RUT . ", "
-                        . self::LOGIN . ", "
-                        . self::PASSWORD . ")"
-                        . "VALUES (?,?,?,?,?)";
-                    try {
+        //determinamos si el usuario ya existe
+        $usuarioenDB = self::obtenerUsuarioPorRut($rut);
+        if ($usuarioenDB == NULL)
+        {
+            //determinamos si el serial ya esta registrado
+            $serialenDB = self::checkserial($serial);
+            if ($serialenDB == NULL)
+            {
+                $nombre = $usuario->nombre;
+                $correo = $usuario->correo;
+                $password = $usuario->password;
+                $respuesta = array();
+                $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ("
+                    . self::NOMBRES . ", "
+                    . self::CORREO . ", "
+                    . self::RUT . ", "
+                    . self::LOGIN . ", "
+                    . self::PASSWORD . ")"
+                    . "VALUES (?,?,?,?,?)";
+                try
+                {
                     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
                     $sentencia->bindParam(1, $nombre);
                     $sentencia->bindParam(2, $correo);
@@ -157,21 +148,76 @@ class usuarios
                     $sentencia->bindParam(4, $rut);
                     $sentencia->bindParam(5, $password);
                     $sentencia->execute();
-                    $id_usuario = self::obtenerUsuarioPorRut($rut);
-                    if (seriales::crear($id_usuario['id_usuarios'], $serial)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                } catch (PDOException $e) {
-                    throw new ExcepcionApi(10, $e->getMessage());
+                } catch (PDOException $exception) {
+                    throw new ExcepcionApi(10, $exception->getMessage());
                 }
+                //una vez ejecutado el insert en la tabla de usuarios, obtenemos que id le corresponde
+                //y se ejecuta el insert en la tabla de seriales
+                $id_usuario = self::obtenerUsuarioPorRut($rut);
+                seriales::crear($id_usuario['id_usuarios'], $serial);
+                http_response_code(200);
+                $respuesta["rut"] = $id_usuario["rut"];
+                $respuesta["nombres"] = $id_usuario["nombres"];
+                $respuesta["apellidos"] = $id_usuario["apellidos"];
+                return ["rut" => $respuesta["rut"], "mensaje" => "Usuario creado de forma exitosa"];
             } else {
                 throw new ExcepcionApi(5, "El serial ya existe en el sistema");
             }
         } else {
-            throw new ExcepcionApi(5, "El usuario ya existe en el sistema");
+            throw new ExcepcionApi(5, "El rut del usuario ya existe en el sistema");
         }
-
     }
+
+    //permite el ingreso de un usuario al sistema
+    private function loguear()
+    {
+
+        $respuesta = array();
+        $body = file_get_contents('php://input');
+        $usuario = json_decode($body);
+        $rut = $usuario->rut;
+        $password = $usuario->password;
+
+        if (self::autenticar($rut, $password)) {
+            $usuarioBD = self::obtenerUsuarioPorRut($rut);
+            if ($usuarioBD != NULL) {
+                http_response_code(200);
+                $respuesta["id_usuarios"] = $usuarioBD["id_usuarios"];
+                $respuesta["nombres"] = $usuarioBD["nombres"];
+                $respuesta["apellidos"] = $usuarioBD["apellidos"];
+                return ["estado" => 1, "usuario" => $respuesta];
+            } else {
+                throw new ExcepcionApi(5,"Las credenciales no corresponden a ningun usuario registrado");
+            }
+        } else {
+            throw new ExcepcionApi(5,utf8_encode("Correo o contraseña inválidos"));
+        }
+    }
+
+    //permite el ingreso de un usuario al sistema
+    private function mostrar()
+    {
+        $respuesta = array();
+        $body = file_get_contents('php://input');
+        $usuario = json_decode($body);
+        $rut = $usuario->rut;
+        $usuarioBD = self::obtenerUsuarioPorRut($rut);
+        if ($usuarioBD != NULL)
+        {
+            $seriales = seriales::obtenerSerialesPorIdUsuario($usuarioBD["id_usuarios"]);
+            if ($seriales != null)
+            {
+
+                $respuesta = luces::obtenerLucesporIdSerial($seriales["id_serial"]);
+                http_response_code(200);
+                return ["estado" => 1, "usuario" => $respuesta];
+            } else {
+                throw new ExcepcionApi(5,"El serial no esta registrado en el sistema");
+            }
+        } else {
+            throw new ExcepcionApi(5,"El rut no esta registrado en el sistema");
+        }
+    }
+
+
 }

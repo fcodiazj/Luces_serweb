@@ -18,7 +18,8 @@ class luces
     const COLOR = "color";
     const POS_FILA = "pos_fila";
     const POS_COL = "pos_col";
-    //const ID_SERIAL = "id_serial";
+    const ID_SERIAL = "id_serial";
+
 
     //determina la accion a realiza sobre el recurso
     public function post($peticion)
@@ -36,41 +37,40 @@ class luces
         }
         if ($accion == 'listar') {//devuelve el estado de las luces asociadas al id_serial
             return self::listar();
-        }
-        else {
+        } else {
             throw new ExcepcionApi(5, "Url mal formada");
         }
     }
-    //crea una luz en la tabla de luces, asociada al id_serial
-    private function crear(){
-        $respuesta = array();
-        $body = file_get_contents('php://input');
-        $luces = json_decode($body);
-        $id_serial = $luces->id_serial;
-        $comando = "SELECT password FROM " . self::NOMBRE_TABLA .
-            " WHERE " . self::RUT . "=?";
 
+    //obtiene los datos de las luces asociadas al id_serial
+    public function obtenerLucesporIdSerial($id_serial)
+    {
+        $comando = "SELECT "
+            . self::ID_LUZ . ", "
+            . self::COLOR . ", "
+            . self::POS_FILA . ", "
+            . self::POS_COL
+            . " FROM "
+            . self::NOMBRE_TABLA_LUCES
+            . " WHERE "
+            . self::ID_SERIAL . "=?";
         try {
             $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-            $sentencia->bindParam(1, $rut);
+            $sentencia->bindParam(1, $id_serial);
             $sentencia->execute();
-
-            if ($sentencia) {
-                $resultado = $sentencia->fetch();
-                //var_dump($resultado);
-                if ($resultado['password'] == $password) {
-                    //print "logeado";
-                    return true;
-                } else {
-                    //print "no logeado";
-                    return false;
-                }
+            if ($sentencia->execute()) {
+                return $sentencia->fetch(PDO::FETCH_ASSOC);
             } else {
-                return false;
+                return null;
             }
-        }
-        catch (PDOException $e) {
+        } catch (PDOException $e) {
             throw new ExcepcionApi(5, $e->getMessage());
         }
+    }
+
+    //crea una luz en la tabla de luces, asociada al id_serial
+    private function crear(){}
 
 }
+
+

@@ -42,12 +42,8 @@ class seriales
 
 
     //devuelve los seriales asociados al id_usuario
-    private function listar()
+    public function obtenerSerialesPorIdUsuario($id_usuario)
     {
-        $respuesta = array();
-        $body = file_get_contents('php://input');
-        $serial = json_decode($body);
-        $id_usuario = $serial->id_usuario;
         $comando =  "SELECT "
                     .self::ID_SERIAL.", "
                     .self::SERIAL.", "
@@ -59,14 +55,18 @@ class seriales
         try {
             $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
             $sentencia->bindParam(1, $id_usuario);
-            $sentencia->execute();
+            /*$sentencia->execute();
             if ($sentencia) {
                 return  [
                     "estado" => 1, "serial" => $sentencia->fetchAll(PDO::FETCH_ASSOC)
                 ];
             } else {
-                return false;
-            }
+                return null;
+            }*/
+            if ($sentencia->execute())
+                return $sentencia->fetch(PDO::FETCH_ASSOC);
+            else
+                return null;
         }
         catch (PDOException $e) {
             throw new ExcepcionApi(5, $e->getMessage());
@@ -117,7 +117,6 @@ class seriales
         else
             return null;
     }
-
 
 
 

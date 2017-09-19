@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8d52e588-a139-4e28-abc3-6b10f3e1e3d5" name="Default" comment="">
+    <list default="true" id="8d52e588-a139-4e28-abc3-6b10f3e1e3d5" name="Default" comment="Revision">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modelos/luces.php" afterPath="$PROJECT_DIR$/modelos/luces.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modelos/seriales.php" afterPath="$PROJECT_DIR$/modelos/seriales.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modelos/usuarios.php" afterPath="$PROJECT_DIR$/modelos/usuarios.php" />
     </list>
@@ -18,11 +19,17 @@
       <file leaf-file-name="usuarios.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/modelos/usuarios.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="145" column="39" lean-forward="false" selection-start-line="145" selection-start-column="39" selection-end-line="145" selection-end-column="39" />
+            <state relative-caret-position="1710">
+              <caret line="210" column="37" lean-forward="false" selection-start-line="210" selection-start-column="37" selection-end-line="210" selection-end-column="37" />
               <folding>
-                <marker date="1505109341081" expanded="true" signature="2106:2191" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
-                <marker date="1505109341081" expanded="true" signature="4478:4793" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
+                <element signature="n#autenticar#0;n#usuarios#0;n#!!top" expanded="false" />
+                <element signature="e#1389#2109#0#PHP" expanded="false" />
+                <element signature="n#obtenerUsuarioPorRut#0;n#usuarios#0;n#!!top" expanded="false" />
+                <element signature="n#checkserial#0;n#usuarios#0;n#!!top" expanded="false" />
+                <element signature="n#registrar#0;n#usuarios#0;n#!!top" expanded="false" />
+                <element signature="e#4282#4858#0#PHP" expanded="false" />
+                <marker date="1505807166423" expanded="false" signature="1292:1377" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
+                <marker date="1505807166423" expanded="true" signature="3972:4263" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
               </folding>
             </state>
           </provider>
@@ -31,10 +38,26 @@
       <file leaf-file-name="seriales.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/modelos/seriales.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1547">
-              <caret line="96" column="34" lean-forward="false" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
+            <state relative-caret-position="51">
+              <caret line="8" column="14" lean-forward="false" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
               <folding>
-                <marker date="1504606065284" expanded="true" signature="2521:2852" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+                <element signature="n#post#0;n#seriales#0;n#!!top" expanded="false" />
+                <element signature="n#crear#0;n#seriales#0;n#!!top" expanded="false" />
+                <element signature="n#check#0;n#seriales#0;n#!!top" expanded="false" />
+                <marker date="1505806146720" expanded="true" signature="2539:2870" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="luces.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/modelos/luces.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+              <folding>
+                <element signature="n#post#0;n#luces#0;n#!!top" expanded="false" />
+                <element signature="n#obtenerLucesporIdSerial#0;n#luces#0;n#!!top" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -90,6 +113,7 @@
       <list>
         <option value="$PROJECT_DIR$/modelos/seriales.php" />
         <option value="$PROJECT_DIR$/modelos/usuarios.php" />
+        <option value="$PROJECT_DIR$/modelos/luces.php" />
       </list>
     </option>
   </component>
@@ -100,7 +124,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1416" />
+    <option name="y" value="5" />
     <option name="width" value="1440" />
     <option name="height" value="870" />
   </component>
@@ -120,6 +146,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -146,7 +173,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -177,7 +203,8 @@
       <updated>1503912069898</updated>
       <workItem from="1504547304564" duration="4594000" />
       <workItem from="1504934542973" duration="893000" />
-      <workItem from="1505108778000" duration="1453000" />
+      <workItem from="1505108778000" duration="21182000" />
+      <workItem from="1505805917805" duration="1452000" />
     </task>
     <task id="LOCAL-00001" summary="Revision">
       <created>1504552798957</created>
@@ -186,18 +213,26 @@
       <option name="project" value="LOCAL" />
       <updated>1504552798957</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Revision">
+      <created>1505245456813</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1505245456813</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6940000" />
+    <option name="totallyTimeSpent" value="28121000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="870" extended-state="0" />
+    <frame x="1432" y="-8" width="1456" height="916" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.252809" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32961586" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -226,17 +261,98 @@
     <option name="LAST_COMMIT_MESSAGE" value="Revision" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="7" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/modelos/usuarios.php">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="95" column="9" lean-forward="false" selection-start-line="91" selection-start-column="8" selection-end-line="95" selection-end-column="9" />
+          <folding>
+            <element signature="n#autenticar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#1389#2109#0#PHP" expanded="false" />
+            <element signature="n#obtenerUsuarioPorRut#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#checkserial#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#registrar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#4282#4858#0#PHP" expanded="false" />
+            <marker date="1505807166423" expanded="false" signature="1292:1377" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
+            <marker date="1505807166423" expanded="true" signature="3972:4263" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modelos/seriales.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="62" column="20" lean-forward="true" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
+          <folding>
+            <element signature="n#post#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#crear#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#check#0;n#seriales#0;n#!!top" expanded="false" />
+            <marker date="1505806146720" expanded="true" signature="2539:2870" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilidades/ExcepcionApi.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utilidades/ConexionBD.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datos/login_mysql.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="32" column="1" lean-forward="true" selection-start-line="32" selection-start-column="1" selection-end-line="32" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modelos/luces.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="103" column="5" lean-forward="false" selection-start-line="103" selection-start-column="5" selection-end-line="103" selection-end-column="5" />
+          <folding>
+            <element signature="n#post#0;n#luces#0;n#!!top" expanded="false" />
+            <element signature="n#obtenerLucesporIdSerial#0;n#luces#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modelos/usuarios.php">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1505109341081" expanded="true" signature="2106:2191" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
-            <marker date="1505109341081" expanded="true" signature="4478:4793" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
+            <element signature="n#autenticar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#1389#2109#0#PHP" expanded="false" />
+            <element signature="n#obtenerUsuarioPorRut#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#checkserial#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#registrar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#4282#4858#0#PHP" expanded="false" />
+            <marker date="1505807166423" expanded="false" signature="1292:1377" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
+            <marker date="1505807166423" expanded="true" signature="3972:4263" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
           </folding>
         </state>
       </provider>
@@ -246,7 +362,10 @@
         <state relative-caret-position="1632">
           <caret line="96" column="34" lean-forward="false" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
           <folding>
-            <marker date="1504606065284" expanded="true" signature="2521:2852" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+            <element signature="n#post#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#crear#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#check#0;n#seriales#0;n#!!top" expanded="false" />
+            <marker date="1505806146720" expanded="true" signature="2539:2870" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
           </folding>
         </state>
       </provider>
@@ -288,8 +407,14 @@
         <state relative-caret-position="2686">
           <caret line="163" column="79" lean-forward="false" selection-start-line="163" selection-start-column="16" selection-end-line="163" selection-end-column="79" />
           <folding>
-            <marker date="1505109341081" expanded="true" signature="2106:2191" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
-            <marker date="1505109341081" expanded="true" signature="4478:4793" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
+            <element signature="n#autenticar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#1389#2109#0#PHP" expanded="false" />
+            <element signature="n#obtenerUsuarioPorRut#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#checkserial#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#registrar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#4282#4858#0#PHP" expanded="false" />
+            <marker date="1505807166423" expanded="false" signature="1292:1377" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
+            <marker date="1505807166423" expanded="true" signature="3972:4263" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
           </folding>
         </state>
       </provider>
@@ -299,7 +424,10 @@
         <state relative-caret-position="1632">
           <caret line="96" column="34" lean-forward="true" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
           <folding>
-            <marker date="1504606065284" expanded="true" signature="2521:2852" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+            <element signature="n#post#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#crear#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#check#0;n#seriales#0;n#!!top" expanded="false" />
+            <marker date="1505806146720" expanded="true" signature="2539:2870" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
           </folding>
         </state>
       </provider>
@@ -317,16 +445,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/modelos/seriales.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
-          <caret line="96" column="34" lean-forward="false" selection-start-line="96" selection-start-column="34" selection-end-line="96" selection-end-column="34" />
-          <folding>
-            <marker date="1504606065284" expanded="true" signature="2521:2852" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -370,13 +488,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/modelos/luces.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding>
+            <element signature="n#post#0;n#luces#0;n#!!top" expanded="false" />
+            <element signature="n#obtenerLucesporIdSerial#0;n#luces#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/modelos/seriales.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="8" column="14" lean-forward="false" selection-start-line="8" selection-start-column="14" selection-end-line="8" selection-end-column="14" />
+          <folding>
+            <element signature="n#post#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#crear#0;n#seriales#0;n#!!top" expanded="false" />
+            <element signature="n#check#0;n#seriales#0;n#!!top" expanded="false" />
+            <marker date="1505806146720" expanded="true" signature="2539:2870" ph="INSERT INTO ${self::NOMBRE_TABLA_SERIALES}... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/modelos/usuarios.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="145" column="39" lean-forward="false" selection-start-line="145" selection-start-column="39" selection-end-line="145" selection-end-column="39" />
+        <state relative-caret-position="1710">
+          <caret line="210" column="37" lean-forward="false" selection-start-line="210" selection-start-column="37" selection-end-line="210" selection-end-column="37" />
           <folding>
-            <marker date="1505109341081" expanded="true" signature="2106:2191" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
-            <marker date="1505109341081" expanded="true" signature="4478:4793" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
+            <element signature="n#autenticar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#1389#2109#0#PHP" expanded="false" />
+            <element signature="n#obtenerUsuarioPorRut#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#checkserial#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="n#registrar#0;n#usuarios#0;n#!!top" expanded="false" />
+            <element signature="e#4282#4858#0#PHP" expanded="false" />
+            <marker date="1505807166423" expanded="false" signature="1292:1377" ph="SELECT passw... ${self::NOMBRE_TABLA}" />
+            <marker date="1505807166423" expanded="true" signature="3972:4263" ph="INSERT INTO ${self::NOMBRE_TABLA}... " />
           </folding>
         </state>
       </provider>
