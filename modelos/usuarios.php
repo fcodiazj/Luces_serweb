@@ -47,7 +47,7 @@ class usuarios
             break;
 
             default:
-                throw new ExcepcionApi(5, "Url mal formada");
+                throw new ExcepcionApi(5, utf8_encode("Url mal formada"));
             break;
         }
     }
@@ -207,7 +207,6 @@ class usuarios
             $seriales = seriales::obtenerSerialesPorIdUsuario($usuarioBD["id_usuarios"]);
             if ($seriales != null)
             {
-
                 $respuesta = luces::obtenerLucesporIdSerial($seriales["id_serial"]);
                 http_response_code(200);
                 return ["estado" => 1, "usuario" => $respuesta];
