@@ -25,21 +25,28 @@ class seriales
     public function post($peticion)
     {
         $accion = array_shift($peticion);
-        //devuelve los seriales asociados al id_usuario
-        if ($accion == 'listar') {
-            return self::listar();
-        } else {
-            if ($accion == 'crear') {//dado un id_usuario, agrega un registro en la tabla seriales, y crea la tabla luces para ese serial
-                return self::crear();
-            }
-            else {
-                throw new ExcepcionApi(5, "Url mal formada");
-            }
-        }
 
+        switch ($accion) {
+            case 'registrar':
+                return self::registrar();
+                break;
+
+            case 'loguear';
+                return self::loguear();
+                break;
+
+            case 'mostrar';
+                return self::mostrar();
+                break;
+
+            default:
+                throw new ExcepcionApi(5, utf8_encode("Url mal formada"));
+                break;
+        }
 
     }
 
+    private function listar() {}
 
     //devuelve los seriales asociados al id_usuario
     public function obtenerSerialesPorIdUsuario($id_usuario)
@@ -73,10 +80,9 @@ class seriales
         }
     }
 
-    //Esto viene despues de crear un usuario, para asociarlo a su serial. Se llama desde el proceedimiento
-    //de crear usuarios, por eso es una funcion publica
+    //Esto viene despues de crear un usuario, para asociarlo a su serial.
+    // Se llama desde la funcion registrar() en la clase usuarios
     public function crear($id_usuario, $serial){
-        //revisa si existe el serial para ese usuario (asume que los seriales no se repiten)
         $check = self::check($id_usuario,$serial);
         if ($check == null) {
             //si no existe, crea el registro en la tabla seriales
@@ -91,31 +97,33 @@ class seriales
                         ."?)";
             try {
                 $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-
-            $sentencia->bindParam(1, $serial);
-            $sentencia->bindParam(2, $id_usuario);
-            $sentencia->execute();
-            return true;
+                $sentencia->bindParam(1, $serial);
+                $sentencia->bindParam(2, $id_usuario);
+                $sentencia->execute();
+                return true;
             } catch (PDOException $e) {
                 throw new ExcepcionApi(15, $e->getMessage());
             }
         } else {
-            //si existe se sale
-            throw new ExcepcionApi(5, "El serial ya esta asociado con el usuario.");
+            throw new ExcepcionApi(5, utf8_encode("El serial ya está asociado con el usuario."));
         }
     }
 
-
+    //revisa si existe un serial para ese usuario (asume que los seriales no se repiten)
     private function check($id_usuario, $serial){
-        $comando = "SELECT ".self::ID_SERIAL." FROM " . self::NOMBRE_TABLA_SERIALES .
-            " WHERE " . self::ID_USUARIO . "=? AND ".self::SERIAL."=?";
-        $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-        $sentencia->bindParam(1, $id_usuario);
-        $sentencia->bindParam(2, $serial);
-        if ($sentencia->execute())
-            return $sentencia->fetch(PDO::FETCH_ASSOC);
-        else
-            return null;
+        try {
+            $comando = "SELECT ".self::ID_SERIAL." FROM " . self::NOMBRE_TABLA_SERIALES .
+                " WHERE " . self::ID_USUARIO . "=? AND ".self::SERIAL."=?";
+            $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+            $sentencia->bindParam(1, $id_usuario);
+            $sentencia->bindParam(2, $serial);
+            if ($sentencia->execute())
+                return $sentencia->fetch(PDO::FETCH_ASSOC);
+            else
+                return null;
+        } catch (PDOException $e) {
+            throw new ExcepcionApi(15, $e->getMessage());
+        }
     }
 
 
